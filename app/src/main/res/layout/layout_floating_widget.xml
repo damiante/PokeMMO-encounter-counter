@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutParent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <!-- this is the collapsed layout -->
+        <RelativeLayout
+            android:id="@+id/layoutCollapsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+
+<!--            <ImageView-->
+<!--                android:id="@+id/collapsed_iv"-->
+<!--                android:layout_width="140dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:src="@mipmap/pokeball" />-->
+
+            <TextView
+                android:id="@+id/floating_counter_text"
+                android:layout_width="140dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:text="@string/counter_val_current"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                android:background="@drawable/widget_bg"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/buttonMinus"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:tint="@color/design_default_color_primary"
+                android:src="@drawable/ic_minus" />
+
+            <ImageView
+                android:id="@+id/buttonClose"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="125dp"
+                android:tint="@color/design_default_color_error"
+                android:src="@drawable/ic_cancel" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</FrameLayout>

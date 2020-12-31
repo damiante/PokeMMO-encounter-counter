@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PokeMMO encounter counter</string>
+
+    <string name="button_inc_label">+</string>
+    <string name="button_dec_label">-</string>
+    <string name="button_rst_label">0</string>
+
+    <string name="counter_val_default">0</string>
+    <string name="counter_val_current">000000</string>
+
+    <string name="counter_title_default">Encounter count</string>
+    <string name="launch_text">Launch Encounter Counter</string>
+</resources>
