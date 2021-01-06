@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/basic_header">
+
+        <EditTextPreference
+            app:defaultValue="1"
+            app:key="count_by_amount"
+            app:singleLine="true"
+            app:title="@string/count_by_val_title"
+            app:summary="@string/count_by_val_summary"
+            app:dialogTitle="@string/count_by_val_title"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

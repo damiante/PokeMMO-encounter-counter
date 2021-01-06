@@ -3,6 +3,7 @@ package com.example.pokemmoencountercounter;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.LayoutInflater;
@@ -11,22 +12,23 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.preference.PreferenceManager;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class FloatingViewService extends Service implements View.OnClickListener {
 
-    private static final int MOVEMENT_THRESHOLD = 10;
+    private static final int MOVEMENT_THRESHOLD = 5;
 
 
     private WindowManager mWindowManager;
     private View mFloatingView;
-    private View collapsedView;
-//    private View expandedView;
 
     private TextView counterText;
     private int counterVal;
+    private int countByAmount;
 
 
     public FloatingViewService() {
@@ -53,24 +55,21 @@ public class FloatingViewService extends Service implements View.OnClickListener
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-
         //getting windows services and adding the floating view to it
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
-
-
-        //getting the collapsed and expanded view from the floating view
-        collapsedView = mFloatingView.findViewById(R.id.layoutCollapsed);
-        //expandedView = mFloatingView.findViewById(R.id.layoutExpanded);
 
         //intialise counter
         counterText = mFloatingView.findViewById(R.id.floating_counter_text);
         initCounter();
 
+        //init countByAmount from settings
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        countByAmount = Integer.parseInt(prefs.getString(MainActivity.COUNT_BY_AMOUNT_KEY, "1"));
+
         //adding click listener to close button and expanded view
         mFloatingView.findViewById(R.id.buttonClose).setOnClickListener(this);
         mFloatingView.findViewById(R.id.buttonMinus).setOnClickListener(this);
-        //expandedView.setOnClickListener(this);
 
         //adding an touchlistener to make drag movement of the floating widget
         mFloatingView.findViewById(R.id.relativeLayoutParent).setOnTouchListener(new View.OnTouchListener() {
@@ -97,10 +96,6 @@ public class FloatingViewService extends Service implements View.OnClickListener
                         ){
                             incrementCounter();
                         }
-                        /*else {
-                            collapsedView.setVisibility(View.GONE);
-                            expandedView.setVisibility(View.VISIBLE);
-                        }*/
                         return true;
 
 
@@ -114,6 +109,8 @@ public class FloatingViewService extends Service implements View.OnClickListener
                 return false;
             }
         });
+
+
     }
 
     @Override
@@ -122,7 +119,6 @@ public class FloatingViewService extends Service implements View.OnClickListener
         writeCounterValueToInternalStorage();
         if (mFloatingView != null) mWindowManager.removeView(mFloatingView);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -145,15 +141,14 @@ public class FloatingViewService extends Service implements View.OnClickListener
 
     private void initCounter(){
         try{
-            counterVal = readCounterValueFromInternalStorage();
+            setCounterText(readCounterValueFromInternalStorage());
         } catch (NumberFormatException e){
             e.printStackTrace();
-            counterVal = 0;
+            setCounterText(0);
         } catch (IOException e){
             e.printStackTrace();
-            counterVal = 0;
+            setCounterText(0);
         }
-        counterText.setText(counterVal + "");
     }
 
     private int readCounterValueFromInternalStorage() throws NumberFormatException, IOException {
@@ -186,14 +181,23 @@ public class FloatingViewService extends Service implements View.OnClickListener
     }
 
     private void incrementCounter(){
-        counterVal++;
-        counterText.setText(counterVal + "");
+        setCounterText(getCounterText() + countByAmount);
     }
 
     private void decrementCounter(){
-        if (counterVal > 0) {
-            counterVal--;
-            counterText.setText(counterVal + "");
+        int counterVal = getCounterText();
+        if ((counterVal - countByAmount) > 0) {
+            setCounterText(counterVal - countByAmount);
+        } else {
+            setCounterText(0);
         }
+    }
+
+    private void setCounterText(int value){
+        counterText.setText(Integer.toString(value));
+    }
+
+    private int getCounterText(){
+        return Integer.parseInt(counterText.getText().toString());
     }
 }
