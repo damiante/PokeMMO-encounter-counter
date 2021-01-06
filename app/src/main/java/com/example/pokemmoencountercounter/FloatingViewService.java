@@ -27,7 +27,6 @@ public class FloatingViewService extends Service implements View.OnClickListener
     private View mFloatingView;
 
     private TextView counterText;
-    private int counterVal;
     private int countByAmount;
 
 
@@ -134,6 +133,7 @@ public class FloatingViewService extends Service implements View.OnClickListener
 
             case R.id.buttonClose:
                 //closing the widget
+                writeCounterValueToInternalStorage();
                 stopSelf();
                 break;
         }
@@ -172,7 +172,7 @@ public class FloatingViewService extends Service implements View.OnClickListener
 
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(MainActivity.STORAGE_FILENAME, Context.MODE_PRIVATE));
-            outputStreamWriter.write(Integer.toString(counterVal));
+            outputStreamWriter.write(counterText.getText().toString());
             outputStreamWriter.close();
         }
         catch (IOException e) {

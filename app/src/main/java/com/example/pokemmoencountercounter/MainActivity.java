@@ -215,4 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         writeCounterValueToInternalStorage();
         writeCounterTitleToInternalStorage();
     }
+
+    public void onResume() {
+        super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        countByAmount = Integer.parseInt(prefs.getString(COUNT_BY_AMOUNT_KEY, "1"));
+    }
 }
