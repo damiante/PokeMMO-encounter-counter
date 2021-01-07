@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 incrementCounter();
-                writeCounterValueToInternalStorage();
             }
         });
 
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 decrementCounter();
-                writeCounterValueToInternalStorage();
             }
         });
 
@@ -69,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 setCounterText(0);
-                writeCounterValueToInternalStorage();
             }
         });
     }
@@ -215,6 +212,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onPause() {
         super.onPause();
+        writeCounterValueToInternalStorage();
+        writeCounterTitleToInternalStorage();
+    }
+
+    public void onStop() {
+        super.onStop();
         writeCounterValueToInternalStorage();
         writeCounterTitleToInternalStorage();
     }
