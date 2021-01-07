@@ -94,6 +94,7 @@ public class FloatingViewService extends Service implements View.OnClickListener
                                 ((int) (event.getRawY() - initialTouchY) < MOVEMENT_THRESHOLD)
                         ){
                             incrementCounter();
+                            writeCounterValueToInternalStorage();
                         }
                         return true;
 
@@ -129,6 +130,7 @@ public class FloatingViewService extends Service implements View.OnClickListener
 //                break;
             case R.id.buttonMinus:
                 decrementCounter();
+                writeCounterValueToInternalStorage();
                 break;
 
             case R.id.buttonClose:
